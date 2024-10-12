@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список автомобилей</title>
+</head>
+<body>
+    <h1>Список автомобилей</h1>
+
+    {% if user.is_authenticated %}
+        <p>Добро пожаловать, {{ user.username }}!</p>
+        <a href="{% url 'logout' %}">Выйти</a>
+    {% else %}
+        <p>Для добавления комментариев, пожалуйста, <a href="{% url 'login' %}">войдите</a>.</p>
+    {% endif %}
+
+    <h2><a href="{% url 'add_car' %}">Добавить новый автомобиль</a></h2>
+
+    {% for car in cars %}
+        <div>
+            <h2>{{ car.make }} {{ car.model }} ({{ car.year }})</h2>
+            <p>{{ car.description }}</p>
+
+            <h3>Комментарии</h3>
+            <ul>
+             {% for comment in car.comment_set.all %}
+              <li><strong>{{ comment.author.username }}</strong>: {{ comment.content }}</li>
+                {% empty %}
+                <li>Нет комментариев</li>
+                {% endfor %}
+</ul>
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'car_detail' car.pk %}">Написать комментарий</a>
+            {% endif %}
+        </div>
+    {% endfor %}
+</body>
+</html>

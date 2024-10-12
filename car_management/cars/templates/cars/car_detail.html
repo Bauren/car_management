@@ -1,0 +1,18 @@
+<h1>{{ car.make }} {{ car.model }} ({{ car.year }})</h1>
+<p>{{ car.description }}</p>
+
+<h3>Добавить комментарий</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Добавить комментарий</button>
+</form>
+
+<h3>Комментарии</h3>
+<ul>
+    {% for comment in comments %}
+        <li><strong>{{ comment.author.username }}</strong>: {{ comment.content }}</li>
+    {% empty %}
+        <li>Нет комментариев</li>
+    {% endfor %}
+</ul>
